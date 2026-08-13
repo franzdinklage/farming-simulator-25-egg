@@ -5,13 +5,12 @@
         "update_url": null
     },
     "exported_at": "2026-06-23T00:00:00+00:00",
-    "name": "Farming Simulator 25",
-    "author": "janik@mielemeier.com",
-    "description": "Headless FS25 dedicated server running under Wine. Just set your CD-key: on first boot the server downloads your own copy from the official GIANTS portal, installs it, activates the key, and starts itself (you can also upload the installer manually instead). Management via the FS25 web portal (default port 7999).",
+    "name": "Farming Simulator 25 VNC",
+    "author": "znarf89@hotmail.com",
+    "description": "Headless FS25 dedicated server running under Wine with VNC installed. Just set your CD-key: on first boot the server downloads your own copy from the official GIANTS portal, installs it, activates the key, and starts itself (you can also upload the installer manually instead). Management via the FS25 web portal (default port 7999).",
     "features": null,
     "docker_images": {
-        "FS25 WineHQ 11 (recommended)": "ghcr.io/nn-home-com/farming-simulator-25-egg:latest",
-        "FS25 Debian Wine 8 (fallback)": "ghcr.io/nn-home-com/farming-simulator-25-egg:debian"
+        "FS25 WineHQ 11 VNC": "ghcr.io/franzdinklage/farming-simulator-25-egg:latest"
     },
     "file_denylist": [],
     "startup": "bash /opt/fs25/start.sh",
