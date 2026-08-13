@@ -63,6 +63,24 @@ Xvfb "$DISPLAY" -screen 0 1280x720x24 -nolisten tcp >/tmp/xvfb.log 2>&1 &
 XVFB_PID=$!
 sleep 2
 
+log "Starting Fluxbox..."
+fluxbox >/tmp/fluxbox.log 2>&1 &
+FLUXBOX_PID=$!
+
+log "Starting x11vnc..."
+x11vnc \
+    -display "$DISPLAY" \
+    -rfbport 5900 \
+    -forever \
+    -shared \
+    -nopw \
+    -listen 0.0.0.0 \
+    >/tmp/x11vnc.log 2>&1 &
+
+VNC_PID=$!
+
+log "VNC server started on port 5900."
+
 # ---- 2. Wine prefix -----------------------------------------------------------
 if [ ! -f "${WINEPREFIX}/system.reg" ]; then
     log "Initialising Wine prefix at ${WINEPREFIX} (first run, this can take a minute)..."
@@ -147,6 +165,8 @@ shutdown() {
     wineserver -k >/dev/null 2>&1 || true
     kill "$WINE_PID"  >/dev/null 2>&1 || true
     kill "$TAIL_PID"  >/dev/null 2>&1 || true
+    kill "$VNC_PID" >/dev/null 2>&1 || true
+    kill "$FLUXBOX_PID" >/dev/null 2>&1 || true
     kill "$XVFB_PID"  >/dev/null 2>&1 || true
     exit 0
 }
