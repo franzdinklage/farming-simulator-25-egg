@@ -198,6 +198,15 @@
             "user_viewable": true,
             "user_editable": true,
             "rules": "required|integer|between:1024,65535"
+        },
+        {
+            "name": "VNC Password",
+            "description": "Password for the VNC server",
+            "env_variable": "VNC_PASSWORD",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string|max:32"
         }
     ]
 }
