@@ -68,7 +68,7 @@ log "Starting Fluxbox..."
 fluxbox >/tmp/fluxbox.log 2>&1 &
 FLUXBOX_PID=$!
 
-if [ -n "${VNC_PASSWORD}" ]; then
+if [ -n "${VNC_PASSWORD:-}" ]; then
     x11vnc -storepasswd "${VNC_PASSWORD}" /tmp/vnc.pass >/dev/null 2>&1
     VNC_AUTH_ARGS="-rfbauth /tmp/vnc.pass"
 else
