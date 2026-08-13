@@ -27,6 +27,9 @@ RUN dpkg --add-architecture i386 \
  && apt-get install -y --no-install-recommends \
       winbind \
       xvfb xdotool \
+	  x11vnc \
+	  fluxbox \
+	  xterm \
       libvulkan1 mesa-vulkan-drivers \
       p7zip-full cabextract \
       nodejs \
