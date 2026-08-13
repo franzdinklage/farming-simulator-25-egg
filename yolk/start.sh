@@ -35,6 +35,7 @@ export GAME_DIR DOCS_DIR DEDI_DIR INSTALLER_DIR DLC_DIR DATA_DIR FS25_LIB FS25_C
 export WEB_PORT="${WEB_PORT:-7999}"
 export WEB_USERNAME="${WEB_USERNAME:-admin}"
 export WEB_PASSWORD="${WEB_PASSWORD:-changeme}"
+export VNC_PORT="${VNC_PORT:-5900}"
 
 log()  { echo -e "\e[36m[fs25]\e[0m $*"; }
 warn() { echo -e "\e[33m[fs25] WARN:\e[0m $*"; }
@@ -70,7 +71,7 @@ FLUXBOX_PID=$!
 log "Starting x11vnc..."
 x11vnc \
     -display "$DISPLAY" \
-    -rfbport 5900 \
+    -rfbport "${VNC_PORT}" \
     -forever \
     -shared \
     -nopw \
@@ -79,7 +80,7 @@ x11vnc \
 
 VNC_PID=$!
 
-log "VNC server started on port 5900."
+log "VNC server started on port ${VNC_PORT}."
 
 # ---- 2. Wine prefix -----------------------------------------------------------
 if [ ! -f "${WINEPREFIX}/system.reg" ]; then

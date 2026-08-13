@@ -189,6 +189,15 @@
             "user_viewable": true,
             "user_editable": true,
             "rules": "required|string|max:16"
+        },
+        {
+            "name": "VNC Port",
+            "description": "Port for the x11vnc server",
+            "env_variable": "VNC_PORT",
+            "default_value": "5900",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|integer|between:1024,65535"
         }
     ]
 }
