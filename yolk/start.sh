@@ -68,12 +68,6 @@ log "Starting Fluxbox..."
 fluxbox >/tmp/fluxbox.log 2>&1 &
 FLUXBOX_PID=$!
 
-log "Starting xterm..."
-2
-xterm -geometry 120x30+20+20 >/tmp/xterm.log 2>&1 &
-3
-XTERM_PID=$!
-
 log "Starting x11vnc..."
 x11vnc \
     -display "$DISPLAY" \
@@ -170,7 +164,6 @@ shutdown() {
     node "${FS25_LIB}/start-game.mjs" --stop >/dev/null 2>&1 || true
     sleep 3
     wineserver -k >/dev/null 2>&1 || true
-    kill "$XTERM_PID" >/dev/null 2>&1 || true
     kill "$WINE_PID"  >/dev/null 2>&1 || true
     kill "$TAIL_PID"  >/dev/null 2>&1 || true
     kill "$VNC_PID" >/dev/null 2>&1 || true
