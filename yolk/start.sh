@@ -156,9 +156,11 @@ log "Web portal host detected as ${WEB_HOST}."
 if [ "${MAINTENANCE_MODE:-0}" = "1" ]; then
     log "Maintenance mode enabled. Dedicated server startup skipped."
 
-    while true; do
-        sleep 60
-    done
+    wine explorer /desktop=fs25,1280x720 &
+    WINE_PID=$!
+
+    wait "$WINE_PID"
+    shutdown
 fi
 
 # ---- 6. Start the dedicated server (web portal) -------------------------------

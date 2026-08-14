@@ -210,7 +210,7 @@
         },
         {
             "name": "Maintenance Mode",
-            "description": "Start container without launching the dedicated server",
+            "description": "0 = Normal Start, 1 = Maintenance Mode (only VNC/Wine environment/FS25 Desktop starts)",
             "env_variable": "MAINTENANCE_MODE",
             "default_value": "0",
             "user_viewable": true,
