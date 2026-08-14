@@ -68,6 +68,10 @@ log "Starting Fluxbox..."
 fluxbox >/tmp/fluxbox.log 2>&1 &
 FLUXBOX_PID=$!
 
+log "Starting xterm..."
+xterm -geometry 120x30+20+20 >/tmp/xterm.log 2>&1 &
+XTERM_PID=$!
+
 if [ -n "${VNC_PASSWORD:-}" ]; then
     x11vnc -storepasswd "${VNC_PASSWORD}" /tmp/vnc.pass >/dev/null 2>&1
     VNC_AUTH_ARGS="-rfbauth /tmp/vnc.pass"
@@ -185,6 +189,7 @@ shutdown() {
     kill "$WINE_PID"  >/dev/null 2>&1 || true
     kill "$TAIL_PID"  >/dev/null 2>&1 || true
     kill "$VNC_PID" >/dev/null 2>&1 || true
+    kill "$XTERM_PID" >/dev/null 2>&1 || true
     kill "$FLUXBOX_PID" >/dev/null 2>&1 || true
     kill "$XVFB_PID"  >/dev/null 2>&1 || true
     exit 0
