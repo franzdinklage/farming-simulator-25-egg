@@ -152,7 +152,16 @@ WEB_HOST=$(ip -4 addr show scope global 2>/dev/null | grep -oP '(?<=inet\s)\d+(\
 export WEB_HOST
 log "Web portal host detected as ${WEB_HOST}."
 
-# ---- 5. Start the dedicated server (web portal) -------------------------------
+# ---- 5. Maintenance_Mode -------------------------------------------------------
+if [ "${MAINTENANCE_MODE:-0}" = "1" ]; then
+    log "Maintenance mode enabled. Dedicated server startup skipped."
+
+    while true; do
+        sleep 60
+    done
+fi
+
+# ---- 6. Start the dedicated server (web portal) -------------------------------
 WINE_LOG="${DEDI_DIR}/dedicatedServer.log"
 mkdir -p "$DEDI_DIR/logs"
 : > "$WINE_LOG"
@@ -165,7 +174,7 @@ log "Launching dedicatedServer.exe..."
 wine explorer /desktop=fs25,1280x720 "${GAME_DIR}/dedicatedServer.exe" >>"$WINE_LOG" 2>&1 &
 WINE_PID=$!
 
-# ---- 8. Clean shutdown handler ------------------------------------------------
+# ---- 7. Clean shutdown handler ------------------------------------------------
 shutdown() {
     log "Shutdown requested — stopping FS25 server..."
     node "${FS25_LIB}/start-game.mjs" --stop >/dev/null 2>&1 || true
@@ -180,7 +189,7 @@ shutdown() {
 }
 trap shutdown SIGINT SIGTERM
 
-# ---- 6. Wait for the web portal, then start the game session ------------------
+# ---- 8. Wait for the web portal, then start the game session ------------------
 log "Waiting for web portal on ${WEB_HOST}:${WEB_PORT}..."
 for i in $(seq 1 60); do
     if nc -z "$WEB_HOST" "$WEB_PORT" 2>/dev/null; then
@@ -197,7 +206,7 @@ else
     warn "Web portal never came up. Inspect ${WINE_LOG}."
 fi
 
-# ---- 7. Stream the server log to the panel console ----------------------------
+# ---- 9. Stream the server log to the panel console ----------------------------
 # The rich log is the timestamped session log under dedicated_server/logs/.
 log "Server running. Streaming log (web portal: http://${WEB_HOST}:${WEB_PORT})."
 SERVER_LOG=$(ls -t "${DEDI_DIR}/logs/"server_*.log 2>/dev/null | head -1)

@@ -206,7 +206,16 @@
             "default_value": "",
             "user_viewable": true,
             "user_editable": true,
-            "rules": "nullable|string|max:32"
+            "rules": "nullable|string|max:64"
+        },
+        {
+            "name": "Maintenance Mode",
+            "description": "Start container without launching the dedicated server",
+            "env_variable": "MAINTENANCE_MODE",
+            "default_value": "0",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|integer|between:0,1"
         }
     ]
 }
