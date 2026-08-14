@@ -145,18 +145,7 @@ else
     bash "${FS25_LIB}/install-game.sh" --dlc-only || warn "DLC pass reported problems (continuing)."
 fi
 
-# ---- 4. Render configuration from environment ---------------------------------
-bash "${FS25_LIB}/configure.sh"
-
-# The dedicated server binds its web portal to the container network IP, not
-# loopback, so detect it and share it with the helper that drives the portal.
-WEB_HOST=$(ip -4 addr show scope global 2>/dev/null | grep -oP '(?<=inet\s)\d+(\.\d+){3}' | head -1)
-[ -z "$WEB_HOST" ] && WEB_HOST=$(hostname -i 2>/dev/null | awk '{print $1}')
-[ -z "$WEB_HOST" ] && WEB_HOST=127.0.0.1
-export WEB_HOST
-log "Web portal host detected as ${WEB_HOST}."
-
-# ---- 5. Maintenance_Mode -------------------------------------------------------
+# ---- 4. Maintenance_Mode -------------------------------------------------------
 if [ "${MAINTENANCE_MODE:-0}" = "1" ]; then
     log "Maintenance mode enabled. Dedicated server startup skipped."
 
@@ -166,6 +155,17 @@ if [ "${MAINTENANCE_MODE:-0}" = "1" ]; then
     wait "$WINE_PID"
     shutdown
 fi
+
+# ---- 5. Render configuration from environment ---------------------------------
+bash "${FS25_LIB}/configure.sh"
+
+# The dedicated server binds its web portal to the container network IP, not
+# loopback, so detect it and share it with the helper that drives the portal.
+WEB_HOST=$(ip -4 addr show scope global 2>/dev/null | grep -oP '(?<=inet\s)\d+(\.\d+){3}' | head -1)
+[ -z "$WEB_HOST" ] && WEB_HOST=$(hostname -i 2>/dev/null | awk '{print $1}')
+[ -z "$WEB_HOST" ] && WEB_HOST=127.0.0.1
+export WEB_HOST
+log "Web portal host detected as ${WEB_HOST}."
 
 # ---- 6. Start the dedicated server (web portal) -------------------------------
 WINE_LOG="${DEDI_DIR}/dedicatedServer.log"
